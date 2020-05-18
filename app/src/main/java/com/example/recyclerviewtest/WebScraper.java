@@ -43,25 +43,28 @@ public class WebScraper {
             "PHARM",//18
             "KOS"};//19
 
-    public static void main() throws IOException {
-//            URLManipFunc();
-    }
-
-    //.concat(KulliyyahListVal[7])
     public static List<List<String>> URLManipFunc(int kulliyyahSelectPosition, int pageSelectPosition, int semesterSelectPosition) throws IOException {
+
         List<List<String>> GroupBind2;
+
         String url = "http://albiruni.iium.edu.my/myapps/StudentOnline/schedule1.php";
+
         pageSelectPosition++;
+
         semesterSelectPosition++;
-        int semesterVal;
+
         String sessionVal = "2019/2020";
-        int kulliyyahChoice = 0;
+
         String url2 = "?action=view&view=".concat(String.valueOf(pageSelectPosition * 50)) + "&kuly=".concat(KulliyyahListVal[kulliyyahSelectPosition]) + "&ctype=%3C&course=&sem=".concat(String.valueOf(semesterSelectPosition)) + "&ses=".concat(sessionVal);
+
         String url3 = url + url2;
         //Only used once coz I'm too lazy to write the values one by one
+//
 //        GetKulyList(url);
 
+
         GroupBind2 = WebScrapper(url3);
+
         return GroupBind2;
     }
 
@@ -80,7 +83,6 @@ public class WebScraper {
                     .select("option:nth-child(n)")
                     .val()
                     .toCharArray();
-//            System.out.println(ListKul);
         }
     }
 
@@ -92,10 +94,14 @@ public class WebScraper {
         String Lecturer2 = null;
         String Lecturer3 = null;
         //Tries to connect. Haven't implement the "if it fails" option
+        Document document = Jsoup
+                .connect(url)
+                .userAgent("Google Chrome")
+                .timeout(6000)
+                .get();
 
-        Document document = Jsoup.connect(url).userAgent("Google Chrome").timeout(6000).get();
-
-        Elements subjectCodeRowRough = document.select("body > table:nth-child(4) > tbody > tr:nth-child(n)");//Select the table that contains the Data List
+        Elements subjectCodeRowRough = document
+                .select("body > table:nth-child(4) > tbody > tr:nth-child(n)");//Select the table that contains the Data List
 //
         //For loop eliminates the parts that don't contain the data we need
         for (int i = 3; i < subjectCodeRowRough.size() - 2; i++) {
@@ -103,18 +109,22 @@ public class WebScraper {
             List<String> DataBind = new ArrayList<>();
             Element test = subjectCodeRowRough
                     .get(i);
+
             subjectCode = test
                     .select("tr:nth-of-type(n) > td:nth-of-type(1)")
                     .first()
                     .text();
+
             subjectTitle = test
                     .select("tr:nth-of-type(n) >td:nth-of-type(3)")
                     .first()
                     .text();
+
             section = test
                     .select("tr:nth-of-type(n) >td:nth-of-type(2)")
                     .first()
                     .text();
+
             Lecture1 = test
                     .select(" tr:nth-child(n) > td:nth-child(5) > table > tbody > tr > td:nth-child(4)")
                     .first()
@@ -125,11 +135,9 @@ public class WebScraper {
                 //check if its not empty
                 if (!(test.select("tr:nth-child(n) > td:nth-child(5) > table > tbody > tr > td:nth-child(4)").get(1).text() == null)) {
                     Lecturer2 = test.select("tr:nth-child(n) > td:nth-child(5) > table > tbody > tr > td:nth-child(4)").get(1).text();
-//                    System.out.println("Lecturer 2: " + Lecturer2);
                 }
             } else if (!test.select("tr:nth-child(n) > td:nth-child(5) > table > tbody > tr:nth-child(3) > td:nth-child(4)").isEmpty()) {
                 Lecturer3 = test.select("tr:nth-child(n) > td:nth-child(5) > table > tbody > tr > td:nth-child(4)").get(2).text();
-//                    System.out.println("Lecturer 3: "+ Lecturer3);
             }
 
             String creditHour = test
@@ -145,12 +153,10 @@ public class WebScraper {
             out.println("Code: " + subjectCode + "\n" + "Title: " + subjectTitle + "\n" + "Section: " + section);
             //Unnecessary but it makes life easier
             String[] BundleList = {subjectTitle, section, subjectCode, Lecture1, Lecturer2, Lecturer3, Venue};
-//                out.println("Chr: " + CreditHour);
             for (String element : BundleList)
                 DataBind.addAll(Collections.singleton(element));
             GroupBind.add(DataBind);
             Log.d("TAG", "String.valueOf(GroupBind)");
-//                out.println(GroupBind);
 
 
         }

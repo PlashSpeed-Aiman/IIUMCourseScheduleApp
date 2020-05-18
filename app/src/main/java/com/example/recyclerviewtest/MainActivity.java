@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mDialog = new Dialog(this);
         btn = findViewById(R.id.button);
-//        btn2 = findViewById(R.id.button2);//
         kulliyyahSelect = findViewById(R.id.spinner5);
         pageSelect = findViewById(R.id.spinner);
         semesterSelect = findViewById(R.id.spinner2);
@@ -58,43 +57,17 @@ public class MainActivity extends AppCompatActivity {
                 syncTask();
             }
         });
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                webscrapperAsyncTask = new WebscrapperAsyncTask();
-//                initRecyclerViewAdapter();
-//            }
-//        });
-//        initRecyclerViewAdapter();
-//        subjectProcess();
     }
 
-    //    private void subjectProcess(){
-//        mSubjectCode.add("MECH1301");
-//        mSubjectTitle.add("Statics");
-//
-//        mSubjectCode.add("MECH13022");
-//        mSubjectTitle.add("Dynamics");
-//
-//        mSubjectCode.add("MATH1310");
-//        mSubjectTitle.add("Engineering Mathematics 1");
-//
-//        mSubjectCode.add("MATH1320");
-//        mSubjectTitle.add("Engineering Mathematics 2");
-//        initRecyclerViewAdapter();
-//    }
+
     private void initRecyclerViewAdapter() {
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind, mDialog);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                recyclerView.getRecycledViewPool().clear();
-//            }
-//        });
 
+        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind, mDialog);
+
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void syncTask() {
