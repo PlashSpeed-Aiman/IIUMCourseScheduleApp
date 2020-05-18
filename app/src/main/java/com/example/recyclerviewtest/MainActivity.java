@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(position == 2)
                 {
-
+                    Toast.makeText(MainActivity.this, "162759130726 - Maybank (ihik ihik)", Toast.LENGTH_SHORT).show();
                 }
             }
         });
