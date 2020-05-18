@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">IIUM Course Schedule</string>
+    <string name="section">Section : </string>
+    <string name="venue">"Venue : "</string>
+    <string-array name="Kulliyyah_List">
+        <item>KAHS</item>
+        <item>AED</item>
+        <item>BRIDG</item>
+        <item>CFL</item>
+        <item>CCAC</item>
+        <item>DENT</item>
+        <item>EDUC</item>
+        <item>ENGIN</item>
+        <item>ECONS</item>
+        <item>KICT</item>
+        <item>IHART</item>
+        <item>IRKHS</item>
+        <item>IIBF</item>
+        <item>ISTAC</item>
+        <item>KLM</item>
+        <item>LAWS</item>
+        <item>MEDIC</item>
+        <item>NURS</item>
+        <item>PHARM</item>
+        <item>KOS"</item>
+
+    </string-array>
+</resources>
