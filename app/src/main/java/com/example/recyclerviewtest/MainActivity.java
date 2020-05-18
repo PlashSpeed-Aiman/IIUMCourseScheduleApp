@@ -1,16 +1,24 @@
 package com.example.recyclerviewtest;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mSubjectCode = new ArrayList<>();
     private ArrayList<String> mSubjectTitle = new ArrayList<>();
     List<List<String>> mGroupBind = new ArrayList<>();
-    Dialog mDialog;
-    Button btn, btn2;
+    private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
+    Button btn;
     Spinner kulliyyahSelect;
     Spinner pageSelect;
     Spinner semesterSelect;
@@ -33,15 +45,26 @@ public class MainActivity extends AppCompatActivity {
     int semesterSelectPosition;
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDialog = new Dialog(this);
         btn = findViewById(R.id.button);
         kulliyyahSelect = findViewById(R.id.spinner5);
         pageSelect = findViewById(R.id.spinner);
         semesterSelect = findViewById(R.id.spinner2);
+        mDrawerList = findViewById(R.id.navList);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
+
+        addDrawerItems();
+        setupDrawer();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerViewAdapter() {
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind, mDialog);
+        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
 
         recyclerView.setAdapter(adapter);
 
@@ -118,7 +141,82 @@ public class MainActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
         }
     }
+    private void addDrawerItems() {
+        String[] osArray = { "Schedule","About","Donations" };
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 1){
+                    Toast.makeText(MainActivity.this, "Developed & Designed By: Aiman Rahim (GitHub: PlashSpeed-Aiman) & Shahrul Afiq", Toast.LENGTH_SHORT).show();
+
+                }
+                if(position == 2)
+                {
+
+                }
+            }
+        });
+    }
+
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+//                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
+
 
 
 

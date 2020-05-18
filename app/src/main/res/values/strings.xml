@@ -2,27 +2,30 @@
     <string name="app_name">IIUM Course Schedule</string>
     <string name="section">Section : </string>
     <string name="venue">"Venue : "</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string-array name="Kulliyyah_List">
         <item>KAHS</item>
-        <item>AED</item>
-        <item>BRIDG</item>
-        <item>CFL</item>
-        <item>CCAC</item>
-        <item>DENT</item>
-        <item>EDUC</item>
-        <item>ENGIN</item>
-        <item>ECONS</item>
+        <item>KAED</item>
+        <item>BRIDGE</item>
+        <item>CELPAD</item>
+        <item>COCU</item>
+        <item>KOD</item>
+        <item>KOED</item>
+        <item>KOE</item>
+        <item>KENMS</item>
         <item>KICT</item>
         <item>IHART</item>
-        <item>IRKHS</item>
+        <item>KIRKHS</item>
         <item>IIBF</item>
         <item>ISTAC</item>
         <item>KLM</item>
-        <item>LAWS</item>
-        <item>MEDIC</item>
-        <item>NURS</item>
-        <item>PHARM</item>
-        <item>KOS"</item>
+        <item>AIKOL</item>
+        <item>KOM</item>
+        <item>KON</item>
+        <item>KOP</item>
+        <item>KOS</item>
 
     </string-array>
 </resources>

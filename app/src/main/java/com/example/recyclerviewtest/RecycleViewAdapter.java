@@ -24,14 +24,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     private ArrayList<String> mSubjectTitle;
     private List<List<String>> mGroupBind;
     private Context mContext;
-    Dialog mDialog;
 
-    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<List<String>> GroupBind,Dialog dialog) {
+
+    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<List<String>> GroupBind) {
         mSubjectCode = subjectCode;
         mSubjectTitle = subjectTitle;
         mContext = context;
         mGroupBind = GroupBind;
-        mDialog = dialog;
     }
     public void ClearData(){
 
@@ -105,15 +104,5 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         }
 
-        public void ShowPopup(View itemView) {
-            TextView txtclose;
-            Button btnFollow;
-            mDialog.setContentView(R.layout.custom_popup);
-            txtclose = (TextView) mDialog.findViewById(R.id.txtclose);
-            txtclose.setText("M");
-            btnFollow = (Button) mDialog.findViewById(R.id.btnfollow);
-            mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            mDialog.show();
-        }
     }
 }
