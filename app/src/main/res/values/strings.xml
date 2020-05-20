@@ -6,7 +6,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="Kulliyyah_List">
-        <item>KAHS</item>
         <item>KAED</item>
         <item>BRIDGE</item>
         <item>CELPAD</item>
@@ -16,16 +15,9 @@
         <item>KOE</item>
         <item>KENMS</item>
         <item>KICT</item>
-        <item>IHART</item>
         <item>KIRKHS</item>
-        <item>IIBF</item>
-        <item>ISTAC</item>
         <item>KLM</item>
         <item>AIKOL</item>
-        <item>KOM</item>
-        <item>KON</item>
-        <item>KOP</item>
-        <item>KOS</item>
 
     </string-array>
 </resources>

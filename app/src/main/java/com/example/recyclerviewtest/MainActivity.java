@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,10 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     ProgressDialog mProgressDialog;
     private ArrayList<String> mSubjectCode = new ArrayList<>();
     private ArrayList<String> mSubjectTitle = new ArrayList<>();
-    List<List<String>> mGroupBind = new ArrayList<>();
+    private List<List<String>> mGroupBind = new ArrayList<>();
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -40,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     Spinner kulliyyahSelect;
     Spinner pageSelect;
     Spinner semesterSelect;
-    int kulliyyahSelectPosition;
-    int pageSelectPosition;
-    int semesterSelectPosition;
+    private int kulliyyahSelectPosition;
+    private int pageSelectPosition;
+    private int semesterSelectPosition;
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
 
 
@@ -82,17 +80,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    private void initRecyclerViewAdapter() {
-        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
-
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
     private void syncTask() {
         try {
             if (webscrapperAsyncTask.getStatus() != AsyncTask.Status.RUNNING) {   // check if asyncTasks is running
@@ -104,10 +91,19 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e("MainActivity_TSK", "Error: " + e.toString());
         }
-
     }
 
-    private class WebscrapperAsyncTask extends AsyncTask<Void, Void, Void> {
+    private void initRecyclerViewAdapter() {
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
+        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
+
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public class WebscrapperAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {

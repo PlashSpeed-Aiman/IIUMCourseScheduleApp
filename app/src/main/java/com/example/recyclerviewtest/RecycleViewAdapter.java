@@ -47,17 +47,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.subjectTitle
                 .setText((mGroupBind.get(position).get(0)));
-        holder.subjectCode.setText(mGroupBind.get(position).get(2));
-//        holder.subjectCode
-//                .setText(mSubjectCode
-//                        .get(position));
+        holder.subjectCode
+                .setText(mGroupBind.get(position).get(2));
         holder.lecturerName2
                 .setText(mGroupBind.get(position).get(4));
         holder.lecturerName
                 .setText(mGroupBind.get(position).get(3));
 
-        if (holder.lecturerName2 == holder.lecturerName) {
-
+//****
+        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText()))
+        {
             holder.lecturerName2
                     .setVisibility(View.INVISIBLE);
 
@@ -65,6 +64,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             holder.lecturerName2
                     .setText(mGroupBind.get(position).get(4));
         }
+        //****
+
         holder.venueVal
                 .setText(mGroupBind.get(position).get(6));
         holder.sectionVal

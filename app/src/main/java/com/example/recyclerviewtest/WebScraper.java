@@ -22,36 +22,26 @@ public class WebScraper {
     private static final String TAG = "MyActivity";
     static List<List<String>> GroupBind = new ArrayList<>();
     static String[] KulliyyahListVal = {
-            "KAHS",//0
             "AED",//1
             "BRIDG",//2
             "CFL",//3
             "CCAC",//4
-            "DENT",//5
             "EDUC",//6
             "ENGIN",//7
             "ECONS",//8
             "KICT",//9
-            "IHART",//10
             "IRKHS",//11
-            "IIBF",//12
-            "ISTAC",//13
             "KLM",//14
-            "LAWS",//15
-            "MEDIC",//16
-            "NURS",//17
-            "PHARM",//18
-            "KOS"};//19
+            "LAWS",};//19
 
     public static List<List<String>> URLManipFunc(int kulliyyahSelectPosition, int pageSelectPosition, int semesterSelectPosition) throws IOException {
 
         List<List<String>> GroupBind2;
 
-        String url = "http://albiruni.iium.edu.my/myapps/StudentOnline/schedule1.php";
-
         pageSelectPosition++;
 
         semesterSelectPosition++;
+        String url = "http://albiruni.iium.edu.my/myapps/StudentOnline/schedule1.php";
 
         String sessionVal = "2019/2020";
 
