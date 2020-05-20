@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -35,16 +36,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    Integer maxpageVal=0;
+    private int kulliyyahSelectPosition;
+    private int pageSelectPosition=0;
+    private int semesterSelectPosition;
+    TextView textView;
     Button btn;
     Spinner kulliyyahSelect;
     Spinner pageSelect;
     Spinner semesterSelect;
-    private int kulliyyahSelectPosition;
-    private int pageSelectPosition;
-    private int semesterSelectPosition;
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
     Button buttonNext,buttonPrev,buttonReset;
     LinearLayout linearLayout;
+    Boolean buttonNextGone;
+    Boolean buttonPrevGone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!(position ==kulliyyahSelectPosition)){
                     btn.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.GONE);
+                    pageSelect.setSelection(0);
                 }
             }
 
@@ -83,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
         semesterSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!(position==semesterSelectPosition))
+                if(!(position==semesterSelectPosition)){
                     btn.setVisibility(View.VISIBLE);
+                    pageSelect.setSelection(0);
+                    linearLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -99,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 kulliyyahSelectPosition =
                         kulliyyahSelect
                                 .getSelectedItemPosition();
-                pageSelectPosition =
-                        pageSelect
-                                .getSelectedItemPosition();
+                pageSelectPosition =0;
+//                        pageSelect
+//                                .getSelectedItemPosition();
                 semesterSelectPosition =
                         semesterSelect
                             .getSelectedItemPosition();
@@ -113,9 +122,19 @@ public class MainActivity extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pageSelectPosition++;
-                pageSelect.setSelection(pageSelectPosition);
-                syncTask();
+                maxpageVal=maxpageVal-2;
+                if(!(pageSelectPosition == maxpageVal)){
+                    pageSelectPosition++;
+                    pageSelect.setSelection(pageSelectPosition);
+                    syncTask();
+
+                }else{
+                    buttonNext.setVisibility(View.GONE);
+                    buttonNextGone = true;
+                }
+
+
+
             }
         });
         buttonPrev.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
                     pageSelectPosition--;
                     pageSelect.setSelection(pageSelectPosition);
                     syncTask();
+                }
+
+                if(buttonNextGone){
+                    buttonNext.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -136,6 +159,10 @@ public class MainActivity extends AppCompatActivity {
                     pageSelectPosition = 0;
                     pageSelect.setSelection(pageSelectPosition);
                     syncTask();
+                }
+                if(buttonNextGone)
+                {
+                    buttonNext.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -185,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
                 mGroupBind.clear();
                 mGroupBind = WebScraper.URLManipFunc(kulliyyahSelectPosition,pageSelectPosition,semesterSelectPosition);
                 Log.d("TAG", "String.valueOf(GroupBind)");
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -196,7 +222,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
 
             // Set title into TextView
+            maxpageVal = Integer.parseInt(mGroupBind.get(0).get(7));
+            if(!(maxpageVal==null)){
+                maxpageVal=1;
+
+            }
             initRecyclerViewAdapter();
+
 //            initRecyclerViewAdapter();
             mProgressDialog.dismiss();
         }
@@ -210,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
-                    Toast.makeText(MainActivity.this, "Developed & Designed By: Aiman Rahim (GitHub: PlashSpeed-Aiman) & Shahrul Afiq", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Developed & Designed By: Aiman Rahim (GitHub: PlashSpeed-Aiman) & Shahrul Afiq. Students of KOE IIUM", Toast.LENGTH_SHORT).show();
 
                 }
                 if(position == 2)

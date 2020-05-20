@@ -34,6 +34,7 @@ public class WebScraper {
             "KLM",//14
             "LAWS",};//19
 
+
     public static List<List<String>> URLManipFunc(int kulliyyahSelectPosition, int pageSelectPosition, int semesterSelectPosition) throws IOException {
 
         List<List<String>> GroupBind2;
@@ -83,6 +84,7 @@ public class WebScraper {
         String Lecture1;
         String Lecturer2 = null;
         String Lecturer3 = null;
+        String pageNumberVal = null;
         //Tries to connect. Haven't implement the "if it fails" option
         Document document = Jsoup
                 .connect(url)
@@ -90,11 +92,32 @@ public class WebScraper {
                 .timeout(6000)
                 .get();
 
+        Elements pageNumberRough = document.select("body > table:nth-child(4) > tbody > tr:nth-child(1) > td > a:nth-last-child(1)");
+        Element pageNumber;
+        try
+        {
+            pageNumber = pageNumberRough.get(0);
+            System.out.println(pageNumber.text());
+            pageNumberVal = pageNumber.text();
+            if (!(pageNumberVal.contains("NEXT")  || pageNumberVal == "next")) {
+                System.out.println(pageNumberVal.concat("URL"));
+            } else {
+                pageNumberRough = document.select("body > table:nth-child(4) > tbody > tr:nth-child(1) > td > a:nth-last-child(2)");
+                pageNumber = pageNumberRough.get(0);
+                pageNumberVal = pageNumber.getAllElements().text();
+                System.out.println(pageNumberVal + "2");
+            }
+        }catch (Exception e){
+            pageNumberVal = "0";
+        }
+
+
+
         Elements subjectCodeRowRough = document
                 .select("body > table:nth-child(4) > tbody > tr:nth-child(n)");//Select the table that contains the Data List
 //
         //For loop eliminates the parts that don't contain the data we need
-        for (int i = 3; i < subjectCodeRowRough.size() - 2; i++) {
+        for (int i = 2; i < subjectCodeRowRough.size() - 2; i++) {
             //I put here so that it resets the ArrayList for every iteration
             List<String> DataBind = new ArrayList<>();
             Element test = subjectCodeRowRough
@@ -142,7 +165,7 @@ public class WebScraper {
 
             out.println("Code: " + subjectCode + "\n" + "Title: " + subjectTitle + "\n" + "Section: " + section);
             //Unnecessary but it makes life easier
-            String[] BundleList = {subjectTitle, section, subjectCode, Lecture1, Lecturer2, Lecturer3, Venue};
+            String[] BundleList = {subjectTitle, section, subjectCode, Lecture1, Lecturer2, Lecturer3, Venue,pageNumberVal};
             for (String element : BundleList)
                 DataBind.addAll(Collections.singleton(element));
             GroupBind.add(DataBind);
