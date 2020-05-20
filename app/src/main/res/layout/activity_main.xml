@@ -41,9 +41,36 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
                 android:text="Send" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/buttonPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PREV" />
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NEXT"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/buttonReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RESET" />
 
         </LinearLayout>
 
@@ -51,12 +78,16 @@
             android:layout_width="match_parent"
             android:layout_height="0.05dp"
             android:background="#686868"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

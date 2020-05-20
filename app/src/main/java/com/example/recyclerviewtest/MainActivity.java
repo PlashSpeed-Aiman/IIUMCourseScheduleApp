@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -42,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private int pageSelectPosition;
     private int semesterSelectPosition;
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
-
-
-
+    Button buttonNext,buttonPrev,buttonReset;
+    LinearLayout linearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +56,42 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = findViewById(R.id.navList);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
-
+        buttonNext = findViewById(R.id.buttonNext);
+        buttonPrev = findViewById(R.id.buttonPrev);
+        buttonReset = findViewById(R.id.buttonReset);
+        linearLayout = findViewById(R.id.buttonLayout);
         addDrawerItems();
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        kulliyyahSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!(position ==kulliyyahSelectPosition)){
+                    btn.setVisibility(View.VISIBLE);
+                    linearLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        semesterSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!(position==semesterSelectPosition))
+                    btn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,9 +106,43 @@ public class MainActivity extends AppCompatActivity {
                         semesterSelect
                             .getSelectedItemPosition();
                 syncTask();
+                linearLayout.setVisibility(View.VISIBLE);
+                btn.setVisibility(View.INVISIBLE);
             }
         });
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pageSelectPosition++;
+                pageSelect.setSelection(pageSelectPosition);
+                syncTask();
+            }
+        });
+        buttonPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(pageSelectPosition ==0)){
+                    pageSelectPosition--;
+                    pageSelect.setSelection(pageSelectPosition);
+                    syncTask();
+                }
+            }
+        });
+
+        buttonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(pageSelectPosition ==0)) {
+                    pageSelectPosition = 0;
+                    pageSelect.setSelection(pageSelectPosition);
+                    syncTask();
+                }
+            }
+        });
+
     }
+
+
 
     private void syncTask() {
         try {
