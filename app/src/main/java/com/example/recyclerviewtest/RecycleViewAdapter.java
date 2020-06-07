@@ -7,39 +7,66 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
-    private ArrayList<String> mSubjectCode;
-    private ArrayList<String> mSubjectTitle;
     private List<List<String>> mGroupBind;
     private Context mContext;
+    private OnCardClickListener mOnCardClickListener;
+    private Dialog mDialog;
 
-
-    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<List<String>> GroupBind) {
-        mSubjectCode = subjectCode;
-        mSubjectTitle = subjectTitle;
+    public RecycleViewAdapter(Context context, List<List<String>> GroupBind, OnCardClickListener onCardClickListener) {
         mContext = context;
         mGroupBind = GroupBind;
+        mOnCardClickListener = onCardClickListener;
     }
-    public void ClearData(){
 
+    public void ClearData() {
     }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView subjectCode, subjectTitle, lecturerName, lecturerName2, venueVal, sectionVal;
+        CardView cardView;
+        OnCardClickListener onCardClickListener;
+
+        public ViewHolder(@NonNull View itemView, OnCardClickListener mOnCardClickListener) {
+            super(itemView);
+            subjectCode = itemView.findViewById(R.id.textView2);
+            subjectTitle = itemView.findViewById(R.id.textView);
+            lecturerName = itemView.findViewById(R.id.textView3);
+            lecturerName2 = itemView.findViewById(R.id.textView4);
+            venueVal = itemView.findViewById(R.id.venue_val);
+            sectionVal = itemView.findViewById(R.id.section_value);
+            cardView = itemView.findViewById(R.id.cardView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onCardClickListener.onCardClickListener(getAdapterPosition());
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_adapter, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view, mOnCardClickListener);
+        mDialog = new Dialog(mContext);
+        mDialog.setContentView(R.layout.dialog_layout);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.show();
+            }
+        });
         return holder;
     }
 
@@ -55,12 +82,11 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 .setText(mGroupBind.get(position).get(3));
 
 //****
-        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText()))
-        {
+        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText())) {
             holder.lecturerName2
                     .setVisibility(View.INVISIBLE);
 
-        }else{
+        } else {
             holder.lecturerName2
                     .setText(mGroupBind.get(position).get(4));
         }
@@ -70,14 +96,14 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 .setText(mGroupBind.get(position).get(6));
         holder.sectionVal
                 .setText(mGroupBind.get(position).get(1));
-        holder.cardView
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, mGroupBind.get(position).toString(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+//        holder.cardView
+//                .setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(mContext, mGroupBind.get(position).toString(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
     }
 
     @Override
@@ -86,24 +112,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     }
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView subjectCode, subjectTitle, lecturerName, lecturerName2,venueVal,sectionVal;
-        CardView cardView;
-        LinearLayout parent_layout;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            subjectCode = itemView.findViewById(R.id.textView2);
-            subjectTitle = itemView.findViewById(R.id.textView);
-            lecturerName = itemView.findViewById(R.id.textView3);
-            lecturerName2 = itemView.findViewById(R.id.textView4);
-            venueVal = itemView.findViewById(R.id.venue_val);
-            sectionVal = itemView.findViewById(R.id.section_value);
-            cardView = itemView.findViewById(R.id.cardView);
-
-        }
-
+    public interface OnCardClickListener {
+        void onCardClickListener(int position);
     }
+
+
 }

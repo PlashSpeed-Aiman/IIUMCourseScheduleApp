@@ -49,6 +49,7 @@ public class WebScraper {
         String url2 = "?action=view&view=".concat(String.valueOf(pageSelectPosition * 50)) + "&kuly=".concat(KulliyyahListVal[kulliyyahSelectPosition]) + "&ctype=%3C&course=&sem=".concat(String.valueOf(semesterSelectPosition)) + "&ses=".concat(sessionVal);
 
         String url3 = url + url2;
+
         //Only used once coz I'm too lazy to write the values one by one
 //
 //        GetKulyList(url);
@@ -117,7 +118,7 @@ public class WebScraper {
                 .select("body > table:nth-child(4) > tbody > tr:nth-child(n)");//Select the table that contains the Data List
 //
         //For loop eliminates the parts that don't contain the data we need
-        for (int i = 2; i < subjectCodeRowRough.size() - 2; i++) {
+        for (int i = 2; i < subjectCodeRowRough.size() - 1; i++) {
             //I put here so that it resets the ArrayList for every iteration
             List<String> DataBind = new ArrayList<>();
             Element test = subjectCodeRowRough

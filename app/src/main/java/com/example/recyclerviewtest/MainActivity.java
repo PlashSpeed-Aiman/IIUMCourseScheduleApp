@@ -25,22 +25,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecycleViewAdapter.OnCardClickListener {
 
     ProgressDialog mProgressDialog;
-    private ArrayList<String> mSubjectCode = new ArrayList<>();
-    private ArrayList<String> mSubjectTitle = new ArrayList<>();
     private List<List<String>> mGroupBind = new ArrayList<>();
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-    Integer maxpageVal=0;
     private int kulliyyahSelectPosition;
-    private int pageSelectPosition=0;
+    private int pageSelectPosition;
     private int semesterSelectPosition;
-    TextView textView;
     Button btn;
     Spinner kulliyyahSelect;
     Spinner pageSelect;
@@ -48,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
     Button buttonNext,buttonPrev,buttonReset;
     LinearLayout linearLayout;
-    Boolean buttonNextGone;
+    Boolean buttonNextGone = false;
     Boolean buttonPrevGone;
+    Integer maxPageVal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//////////////////////////////////////////////////////////////////////////////////////
         btn = findViewById(R.id.button);
         kulliyyahSelect = findViewById(R.id.spinner5);
         pageSelect = findViewById(R.id.spinner);
@@ -65,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPrev = findViewById(R.id.buttonPrev);
         buttonReset = findViewById(R.id.buttonReset);
         linearLayout = findViewById(R.id.buttonLayout);
+////////////////////////////////////////////////////////////////////////
         addDrawerItems();
         setupDrawer();
 
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         semesterSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!(position==semesterSelectPosition)){
+                if(!(position==semesterSelectPosition)) {
                     btn.setVisibility(View.VISIBLE);
                     pageSelect.setSelection(0);
                     linearLayout.setVisibility(View.GONE);
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 kulliyyahSelectPosition =
                         kulliyyahSelect
                                 .getSelectedItemPosition();
-                pageSelectPosition =0;
+                pageSelectPosition = 0;
 //                        pageSelect
 //                                .getSelectedItemPosition();
                 semesterSelectPosition =
@@ -118,23 +117,18 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.INVISIBLE);
             }
+
         });
+
+
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                maxpageVal=maxpageVal-2;
-                if(!(pageSelectPosition == maxpageVal)){
-                    pageSelectPosition++;
-                    pageSelect.setSelection(pageSelectPosition);
-                    syncTask();
 
-                }else{
-                    buttonNext.setVisibility(View.GONE);
-                    buttonNextGone = true;
-                }
-
-
-
+                        pageSelectPosition++;
+                        pageSelect
+                                .setSelection(pageSelectPosition);
+                        syncTask();
             }
         });
         buttonPrev.setOnClickListener(new View.OnClickListener() {
@@ -146,9 +140,6 @@ public class MainActivity extends AppCompatActivity {
                     syncTask();
                 }
 
-                if(buttonNextGone){
-                    buttonNext.setVisibility(View.VISIBLE);
-                }
             }
         });
 
@@ -163,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 if(buttonNextGone)
                 {
                     buttonNext.setVisibility(View.VISIBLE);
+                    buttonNextGone= false;
                 }
             }
         });
@@ -187,11 +179,16 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerViewAdapter() {
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
+        RecycleViewAdapter adapter = new RecycleViewAdapter(this, mGroupBind,this);
 
         recyclerView.setAdapter(adapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void onCardClickListener(int position) {
+        Toast.makeText(this, mGroupBind.get(position).toString(), Toast.LENGTH_SHORT).show();
     }
 
     public class WebscrapperAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -222,11 +219,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
 
             // Set title into TextView
-            maxpageVal = Integer.parseInt(mGroupBind.get(0).get(7));
-            if(!(maxpageVal==null)){
-                maxpageVal=1;
-
-            }
+//            System.out.println(maxpageVal);
             initRecyclerViewAdapter();
 
 //            initRecyclerViewAdapter();
@@ -247,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(position == 2)
                 {
-                    Toast.makeText(MainActivity.this, "162759130726 - Maybank (ihik ihik)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Paypal Maybe", Toast.LENGTH_SHORT).show();
                 }
             }
         });

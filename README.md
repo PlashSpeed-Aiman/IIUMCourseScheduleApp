@@ -1,4 +1,4 @@
-# IIUMCourseScheduleApp
+#IIUMCourseScheduleApp
 This is an Android App that scrapes data from the IIUM Course Schedule website and display in neatly fashion.
 It requires Internet Connection each time the scrapper is activated (duh).
 
