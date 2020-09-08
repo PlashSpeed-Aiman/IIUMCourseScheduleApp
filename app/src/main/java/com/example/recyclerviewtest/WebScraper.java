@@ -94,7 +94,7 @@ public class WebScraper {
                 .select("body > table:nth-child(4) > tbody > tr:nth-child(n)");//Select the table that contains the Data List
 //
         //For loop eliminates the parts that don't contain the data we need
-        for (int i = 3; i < subjectCodeRowRough.size() - 2; i++) {
+        for (int i = 3; i < subjectCodeRowRough.size() - 1; i++) {
             //I put here so that it resets the ArrayList for every iteration
             List<String> DataBind = new ArrayList<>();
             Element test = subjectCodeRowRough

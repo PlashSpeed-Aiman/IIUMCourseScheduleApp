@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private int pageSelectPosition;
     private int semesterSelectPosition;
     WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
-    Button buttonNext,buttonPrev,buttonReset;
+    Button buttonNext, buttonPrev, buttonReset;
     LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         kulliyyahSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!(position ==kulliyyahSelectPosition)){
+                if (!(position == kulliyyahSelectPosition)) {
                     btn.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.GONE);
                 }
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         semesterSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!(position==semesterSelectPosition))
+                if (!(position == semesterSelectPosition))
                     btn.setVisibility(View.VISIBLE);
             }
 
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 .getSelectedItemPosition();
                 semesterSelectPosition =
                         semesterSelect
-                            .getSelectedItemPosition();
+                                .getSelectedItemPosition();
                 syncTask();
                 linearLayout.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.INVISIBLE);
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(pageSelectPosition ==0)){
+                if (!(pageSelectPosition == 0)) {
                     pageSelectPosition--;
                     pageSelect.setSelection(pageSelectPosition);
                     syncTask();
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(pageSelectPosition ==0)) {
+                if (!(pageSelectPosition == 0)) {
                     pageSelectPosition = 0;
                     pageSelect.setSelection(pageSelectPosition);
                     syncTask();
@@ -141,8 +144,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     private void syncTask() {
         try {
@@ -157,7 +158,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static class startInfoActivity extends MainActivity {
+        public void startInfoAct (View v){
+            Intent intent = new Intent(v.getContext(),MainActivity2.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onPointerCaptureChanged(boolean hasCapture) {
+
+        }
+    }
     private void initRecyclerViewAdapter() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
@@ -183,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
                 mGroupBind.clear();
-                mGroupBind = WebScraper.URLManipFunc(kulliyyahSelectPosition,pageSelectPosition,semesterSelectPosition);
+                mGroupBind = WebScraper.URLManipFunc(kulliyyahSelectPosition, pageSelectPosition, semesterSelectPosition);
                 Log.d("TAG", "String.valueOf(GroupBind)");
 
             } catch (IOException e) {
@@ -201,20 +214,24 @@ public class MainActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
         }
     }
+
     private void addDrawerItems() {
-        String[] osArray = { "Schedule","About","Donations" };
+        String[] osArray = {"Schedule", "About", "Donations"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
+                if (position == 0 && mDrawerList.getSelectedItemPosition()!= 0){
+
+                }
+
+                if (position == 1 && mDrawerList.getSelectedItemPosition() != 1) {
                     Toast.makeText(MainActivity.this, "Developed & Designed By: Aiman Rahim (GitHub: PlashSpeed-Aiman) & Shahrul Afiq", Toast.LENGTH_SHORT).show();
 
                 }
-                if(position == 2)
-                {
+                if (position == 2) {
                     Toast.makeText(MainActivity.this, "LOL", Toast.LENGTH_SHORT).show();
                 }
             }
