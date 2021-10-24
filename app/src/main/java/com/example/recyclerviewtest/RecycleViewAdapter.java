@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recyclerviewtest.Model.Course;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
     private ArrayList<String> mSubjectCode;
     private ArrayList<String> mSubjectTitle;
-    private final List<List<String>> mGroupBind;
+    private final List<Course> mGroupBind;
     private Context mContext;
     private int mPos;
 
@@ -53,13 +55,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 mContext.startActivity(intent);
             }
             if (v == subjectCode){
-                Toast.makeText(mContext,"tits", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"test", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
-    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<List<String>> GroupBind) {
+    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<Course> GroupBind) {
         this.mSubjectCode = subjectCode;
         this.mSubjectTitle = subjectTitle;
         this.mContext = context;
@@ -79,30 +81,30 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.subjectTitle
-                .setText((mGroupBind.get(position).get(0)));
+                .setText((mGroupBind.get(position).getName_val()));
         holder.subjectCode
-                .setText(mGroupBind.get(position).get(2));
+                .setText(mGroupBind.get(position).getCode_val());
         holder.lecturerName2
-                .setText(mGroupBind.get(position).get(4));
+                .setText(mGroupBind.get(position).getLectures().toString());
         holder.lecturerName
-                .setText(mGroupBind.get(position).get(3));
+                .setText("Placeholder");
 
 //****
-        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText()))
-        {
-            holder.lecturerName2
-                    .setVisibility(View.INVISIBLE);
-
-        }else{
-            holder.lecturerName2
-                    .setText(mGroupBind.get(position).get(4));
-        }
-        //****
-
+//        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText()))
+//        {
+//            holder.lecturerName2
+//                    .setVisibility(View.INVISIBLE);
+//
+//        }else{
+//            holder.lecturerName2
+//                    .setText(mGroupBind.get(position).get(4));
+//        }
+//        //****
+//
         holder.venueVal
-                .setText(mGroupBind.get(position).get(6));
+                .setText(mGroupBind.get(position).getVenue().toString());
         holder.sectionVal
-                .setText(mGroupBind.get(position).get(1));
+                .setText(mGroupBind.get(position).getSection_val());
         getPos(holder);
     }
 

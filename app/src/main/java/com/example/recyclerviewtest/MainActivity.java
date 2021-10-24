@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.recyclerviewtest.Model.Course;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog mProgressDialog;
     private ArrayList<String> mSubjectCode = new ArrayList<>();
     private ArrayList<String> mSubjectTitle = new ArrayList<>();
-    private List<List<String>> mGroupBind = new ArrayList<>();
+    private List<Course> mGroupBind = new ArrayList<>();
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
