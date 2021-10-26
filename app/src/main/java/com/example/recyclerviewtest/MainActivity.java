@@ -31,8 +31,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ProgressDialog mProgressDialog;
-    private ArrayList<String> mSubjectCode = new ArrayList<>();
-    private ArrayList<String> mSubjectTitle = new ArrayList<>();
     private List<Course> mGroupBind = new ArrayList<>();
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private int kulliyyahSelectPosition;
     private int pageSelectPosition;
     private int semesterSelectPosition;
-    WebscrapperAsyncTask webscrapperAsyncTask = new WebscrapperAsyncTask();
+    WebscrapperAsyncTask webscrapperAsyncTask;
     Button buttonNext, buttonPrev, buttonReset;
     LinearLayout linearLayout;
 
@@ -65,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPrev = findViewById(R.id.buttonPrev);
         buttonReset = findViewById(R.id.buttonReset);
         linearLayout = findViewById(R.id.buttonLayout);
+        webscrapperAsyncTask = new WebscrapperAsyncTask();
         addDrawerItems();
         setupDrawer();
 
@@ -172,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void initRecyclerViewAdapter() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mSubjectCode, mSubjectTitle, this, mGroupBind);
+        RecycleViewAdapter adapter = new RecycleViewAdapter(this, mGroupBind);
 
         recyclerView.setAdapter(adapter);
 

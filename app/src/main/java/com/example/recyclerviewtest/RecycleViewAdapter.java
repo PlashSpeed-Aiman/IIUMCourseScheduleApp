@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclerviewtest.Model.Course;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
-    private ArrayList<String> mSubjectCode;
-    private ArrayList<String> mSubjectTitle;
     private final List<Course> mGroupBind;
     private Context mContext;
     private int mPos;
@@ -30,7 +26,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         TextView subjectCode, subjectTitle, lecturerName, lecturerName2,venueVal,sectionVal;
         CardView cardView;
-        LinearLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,7 +47,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 Intent intent = new Intent(v.getContext(),MainActivity2.class);
                 intent.putExtra("pos",ViewHolder.super.getAdapterPosition());
                 intent.putExtra("key", (Serializable) mGroupBind);
-                mContext.startActivity(intent);
+                v.getContext().startActivity(intent);
             }
             if (v == subjectCode){
                 Toast.makeText(mContext,"test", Toast.LENGTH_SHORT).show();
@@ -61,14 +56,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         }
     }
 
-    public RecycleViewAdapter(ArrayList<String> subjectCode, ArrayList<String> subjectTitle, Context context, List<Course> GroupBind) {
-        this.mSubjectCode = subjectCode;
-        this.mSubjectTitle = subjectTitle;
-        this.mContext = context;
+    public RecycleViewAdapter(Context context, List<Course> GroupBind) {
+//        this.mContext = context;
         this.mGroupBind = GroupBind;
-    }
-    public void ClearData(){
-
     }
     @NonNull
     @Override
@@ -88,19 +78,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 .setText(mGroupBind.get(position).getLectures().toString());
         holder.lecturerName
                 .setText("Placeholder");
-
-//****
-//        if (holder.lecturerName2.getText().equals(holder.lecturerName.getText()))
-//        {
-//            holder.lecturerName2
-//                    .setVisibility(View.INVISIBLE);
-//
-//        }else{
-//            holder.lecturerName2
-//                    .setText(mGroupBind.get(position).get(4));
-//        }
-//        //****
-//
         holder.venueVal
                 .setText(mGroupBind.get(position).getVenue().toString());
         holder.sectionVal

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.example.recyclerviewtest.Model.Course;
@@ -16,6 +17,15 @@ public class MainActivity2 extends AppCompatActivity {
     TextView sectionValue;
     TextView creditHour;
     TextView data_table;
+    WebView webView;
+    @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+        webView.destroy();
+        webView = null;
+        super.onBackPressed();  // optional depending on your needs
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +38,9 @@ public class MainActivity2 extends AppCompatActivity {
         sectionValue = findViewById(R.id.textView15);
         creditHour = findViewById(R.id.textView13);
         data_table = findViewById(R.id.data_table);
+        webView = findViewById(R.id.webView);
+
+        webView.loadData(subjectInfo.get(pos).getHtmlTable(),"text/html","UTF-8");
         StringBuilder str = new StringBuilder();
 
         for(String i : subjectInfo.get(pos).getDay_val()){
@@ -42,6 +55,7 @@ public class MainActivity2 extends AppCompatActivity {
         subjectTitle.setText(subjectInfo.get(pos).getName_val());
         creditHour.setText("Credit Hour: " + subjectInfo.get(pos).getCredit_val());
         data_table.setText(str);
+
 
 
     }

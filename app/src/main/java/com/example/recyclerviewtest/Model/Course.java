@@ -7,7 +7,7 @@ import java.util.List;
 public class Course implements Serializable {
 
 
-    public Course(String code, String sect, String name, String chr, List<String> dayVal, List<String> timeVal, List<String> venue, List<String> lecturers) {
+    public Course(String code, String sect, String name, String chr, List<String> dayVal, List<String> timeVal, List<String> venue, List<String> lecturers,String Data) {
         this.code_val = code;
         this.section_val = sect;
         this.name_val = name;
@@ -16,6 +16,7 @@ public class Course implements Serializable {
         this.time_val = timeVal;
         this.venue = venue;
         this.lectures = lecturers;
+        this.htmlTable = Data;
     }
 
     public String getCode_val() {
@@ -90,6 +91,9 @@ public class Course implements Serializable {
     private List<String> time_val = Collections.emptyList();
     private List<String> venue = Collections.emptyList();
     private List<String> lectures = Collections.emptyList();
+    private String htmlTable = "";
 
-
+    public String getHtmlTable() {
+        return htmlTable;
+    }
 }
