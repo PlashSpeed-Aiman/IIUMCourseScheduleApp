@@ -7,7 +7,7 @@ I fixed the scraper so now it's more robust in collecting the data.
 #### https://github.com/iqfareez/iium_schedule
 
 ## What It Does
-1. A functioning scraper you. The scraper can be found in the source files. It's fully functional, and can be ported to other languages such as Dart or C#.
+1. A functioning scraper. The scraper can be found in the source files. It's fully functional, and can be ported to other languages such as Dart or C#.
 2. Display it in a RecyclerView
 3. Nav Bar, but doesn't do much
 4. Each course now has a page that displays its full info, albeit using Android WebView. Will try to implement more efficient solutions.
