@@ -1,7 +1,7 @@
 # IIUMCourseScheduleApp
 This is an Android App that scrapes data from the IIUM Course Schedule website and display in neatly fashion.
-It requires Internet Connection each time the scrapper is activated.
-
+It requires Internet Connection each time the scrapper is activated. 
+Original Idea from: https://github.com/asdacap/iiumschedule. I fixed the scraper so now it's more robust in collecting the data
 ## What It Does
 1. A functioning scraper you. The scraper can be found in the source files. It's fully functional, and can be ported to other languages such as Dart or C#.
 2. Display it in a RecyclerView
@@ -16,4 +16,4 @@ It requires Internet Connection each time the scrapper is activated.
 ## What It Should Have
 1. A good functioning UI and cohesive UX.
 
-P.S I just learn how to code an app two months ago. Gimme a break, will ya?
+
