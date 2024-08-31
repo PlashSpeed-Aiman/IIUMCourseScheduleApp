@@ -18,6 +18,7 @@ public class WebScraper {
     public WebScraper() {
 
     }
+    public static final String MAIN_URL = "http://albiruni.iium.edu.my/myapps/StudentOnline/schedule1.php";
     public static final int DAY = 0;
     public static final int TIME= 1;
     public static final int VENUE= 2;
@@ -38,26 +39,32 @@ public class WebScraper {
 
     public static List<Course> URLManipFunc(int kulliyyahSelectPosition, int pageSelectPosition, int semesterSelectPosition) throws IOException {
 
-        List<Course> GroupBind2;
-
         pageSelectPosition++;
 
         semesterSelectPosition++;
-        String url = "http://albiruni.iium.edu.my/myapps/StudentOnline/schedule1.php";
 
         String sessionVal = "2020/2021";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+                .append(MAIN_URL)
+                .append("?action=view&view=")
+                .append(pageSelectPosition * 50)
+                .append("&kuly=")
+                .append(KulliyyahListVal[kulliyyahSelectPosition])
+                .append("&ctype=%3C&course=&sem=")
+                .append(semesterSelectPosition)
+                .append("&ses=")
+                .append(sessionVal);
 
-        String url2 = "?action=view&view=".concat(String.valueOf(pageSelectPosition * 50)) + "&kuly=".concat(KulliyyahListVal[kulliyyahSelectPosition]) + "&ctype=%3C&course=&sem=".concat(String.valueOf(semesterSelectPosition)) + "&ses=".concat(sessionVal);
 
-        String url3 = url + url2;
+
         //Only used once coz I'm too lazy to write the values one by one
 //
 //        GetKulyList(url);
 
 
-        GroupBind2 = WebScrapper(url3);
 
-        return GroupBind2;
+        return ScheduleScraper(stringBuilder.toString());
     }
 
     public static void GetKulyList(String url) throws IOException {
@@ -85,7 +92,7 @@ public class WebScraper {
         }
         return data;
     }
-    public static List<Course> WebScrapper(String url) throws IOException {
+    public static List<Course> ScheduleScraper(String url) throws IOException {
         //Tries to connect. Haven't implement the "if it fails" option
         Document document = Jsoup
                 .connect(url)
@@ -102,15 +109,38 @@ public class WebScraper {
             String chr = elements.get(i).getElementsByTag("td").get(3).text();
             Elements data = elements.get(i).getElementsByTag("td").get(4).getElementsByTag("tbody").select("tr");
             String htmlTable = elements.get(i).getElementsByTag("td").get(4).getElementsByTag("table").outerHtml();
+//            String finalTable = "<style>\n" +
+//                    "table { border-radius:10px; border-collapse:collapse; }\n"+
+//                    "table, td {\n" +
+//                    "border: 1px solid black;\n" +
+//                     "font-size: 14px;\n"+
+//                    "} td{ padding: 5px 5px 5px 5px; }</style> " + htmlTable;
             String finalTable = "<style>\n" +
-                    "table { border-radius:10px; border-collapse:collapse; }\n"+
-                    "table, td {\n" +
-                    "border: 1px solid black;\n" +
-                     "font-size: 14px;\n"+
-                    "} td{ padding: 5px 5px 5px 5px; }</style> " + htmlTable;
+                    "table { \n" +
+                    "  width: 100%; \n" +
+                    "  border-collapse: collapse; \n" +
+                    "  border: 1px solid #ddd; \n" +
+                    "} \n" +
+                    "th, td { \n" +
+                    "  padding: 12px; \n" +
+                    "  text-align: left; \n" +
+                    "  font-size: 14px; \n" +
+                    "  border-bottom: 1px solid #ddd; \n" +
+                    "} \n" +
+                    "th { \n" +
+                    "  background-color: #f0f0f0; \n" +
+                    "  color: #333; \n" +
+                    "  font-weight: bold; \n" +
+                    "} \n" +
+                    "tr:nth-child(even) { \n" +
+                    "  background-color: #f9f9f9; \n" +
+                    "} \n" +
+                    "</style> " + htmlTable;
+
+
+
             DataBind.add(new Course(code,sect,Title,chr,getElems(data,DAY),getElems(data,TIME),getElems(data,VENUE),getElems(data,LECTURERS),finalTable));
 
-            Log.d("TAG", "String.valueOf(GroupBind)");
 
 
         }

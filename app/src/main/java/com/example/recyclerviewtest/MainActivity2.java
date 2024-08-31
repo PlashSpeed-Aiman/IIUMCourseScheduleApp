@@ -2,7 +2,9 @@ package com.example.recyclerviewtest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
         webView = null;
         super.onBackPressed();  // optional depending on your needs
     }
+    @SuppressLint("WebViewApiAvailability")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +42,17 @@ public class MainActivity2 extends AppCompatActivity {
         creditHour = findViewById(R.id.textView13);
         data_table = findViewById(R.id.data_table);
         webView = findViewById(R.id.webView);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            webView.getWebChromeClient();
+        }
         webView.loadData(subjectInfo.get(pos).getHtmlTable(),"text/html","UTF-8");
         StringBuilder str = new StringBuilder();
 
         for(String i : subjectInfo.get(pos).getDay_val()){
-            str.append(i + "\n\n");
+            str.append(i).append("\n\n");
         }
         for(String i : subjectInfo.get(pos).getTime_val()){
-            str.append(i + "\n\n");
+            str.append(i).append("\n\n");
         }
 
         subjectCode.setText(subjectInfo.get(pos).getCode_val());

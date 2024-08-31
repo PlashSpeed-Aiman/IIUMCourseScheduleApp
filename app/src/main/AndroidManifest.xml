@@ -14,9 +14,10 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity2" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

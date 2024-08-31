@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +29,14 @@ import com.example.recyclerviewtest.Model.Course;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     ProgressDialog mProgressDialog;
-    private List<Course> mGroupBind = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -109,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 semesterSelectPosition =
                         semesterSelect
                                 .getSelectedItemPosition();
-                syncTask();
+//                syncTask();
+                performWebScraping();
+
                 linearLayout.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.INVISIBLE);
             }
@@ -119,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 pageSelectPosition++;
                 pageSelect.setSelection(pageSelectPosition);
-                syncTask();
+//                syncTask();
+                performWebScraping();
+
             }
         });
         buttonPrev.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!(pageSelectPosition == 0)) {
                     pageSelectPosition--;
                     pageSelect.setSelection(pageSelectPosition);
-                    syncTask();
+//                    syncTask();
+                performWebScraping();
                 }
             }
         });
@@ -139,8 +149,10 @@ public class MainActivity extends AppCompatActivity {
                 if (!(pageSelectPosition == 0)) {
                     pageSelectPosition = 0;
                     pageSelect.setSelection(pageSelectPosition);
-                    syncTask();
+//                    syncTask();
+                performWebScraping();
                 }
+
             }
         });
 
@@ -174,13 +186,37 @@ public class MainActivity extends AppCompatActivity {
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        RecycleViewAdapter adapter = new RecycleViewAdapter(this, mGroupBind);
+        RecycleViewAdapter adapter = new RecycleViewAdapter(this, courses);
 
         recyclerView.setAdapter(adapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+    private void performWebScraping() {
+        // Show the progress dialog
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Connecting to IIUM Course Schedule");
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.show();
 
+        // Execute background task using ExecutorService
+        executorService.execute(() -> {
+            try {
+                courses.clear();
+                courses = WebScraper.URLManipFunc(kulliyyahSelectPosition, pageSelectPosition, semesterSelectPosition);
+                Log.d("TAG", "Web scraping completed");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Post UI update on the main thread
+            mainHandler.post(() -> {
+                initRecyclerViewAdapter();
+                mProgressDialog.dismiss();
+            });
+        });
+    }
     public class WebscrapperAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -196,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                mGroupBind.clear();
-                mGroupBind = WebScraper.URLManipFunc(kulliyyahSelectPosition, pageSelectPosition, semesterSelectPosition);
+                courses.clear();
+                courses = WebScraper.URLManipFunc(kulliyyahSelectPosition, pageSelectPosition, semesterSelectPosition);
                 Log.d("TAG", "String.valueOf(GroupBind)");
 
             } catch (IOException e) {

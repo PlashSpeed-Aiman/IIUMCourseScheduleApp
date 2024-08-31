@@ -16,22 +16,23 @@ import com.example.recyclerviewtest.Model.Course;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
-    private final List<Course> mGroupBind;
+    private final List<Course> courseList;
     private Context mContext;
     private int mPos;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView subjectCode, subjectTitle, lecturerName, lecturerName2,venueVal,sectionVal;
+        TextView subjectCode, subjectTitle, lecturerName2,venueVal,sectionVal;
         CardView cardView;
-
-        public ViewHolder(@NonNull View itemView) {
+        Context _context;
+        public ViewHolder(@NonNull View itemView,Context context) {
             super(itemView);
+            _context = context;
             subjectCode = itemView.findViewById(R.id.textView2);
             subjectTitle = itemView.findViewById(R.id.textView);
-            lecturerName = itemView.findViewById(R.id.textView3);
             lecturerName2 = itemView.findViewById(R.id.textView4);
             venueVal = itemView.findViewById(R.id.venue_val);
             sectionVal = itemView.findViewById(R.id.section_value);
@@ -46,7 +47,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             if(v == cardView){
                 Intent intent = new Intent(v.getContext(),MainActivity2.class);
                 intent.putExtra("pos",ViewHolder.super.getAdapterPosition());
-                intent.putExtra("key", (Serializable) mGroupBind);
+                intent.putExtra("key", (Serializable) courseList);
                 v.getContext().startActivity(intent);
             }
             if (v == subjectCode){
@@ -56,43 +57,51 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         }
     }
 
-    public RecycleViewAdapter(Context context, List<Course> GroupBind) {
-//        this.mContext = context;
-        this.mGroupBind = GroupBind;
+    public RecycleViewAdapter(Context context, List<Course> courses) {
+        this.mContext = context;
+        this.courseList = courses;
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_adapter, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view,mContext);
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        Course course = courseList.get(position);
         holder.subjectTitle
-                .setText((mGroupBind.get(position).getName_val()));
+                .setText(course.getName_val());
         holder.subjectCode
-                .setText(mGroupBind.get(position).getCode_val());
-        holder.lecturerName2
-                .setText(mGroupBind.get(position).getLectures().toString());
-        holder.lecturerName
-                .setText("Placeholder");
+                .setText(course.getCode_val());
+        String lecturers = course.getLectures().stream()
+                .filter(lecturer -> !lecturer.trim().isEmpty()) // Remove empty strings
+                .map(lecturer -> lecturer + "\n") // Append new line after each lecturer
+                .collect(Collectors.joining());
+
+        holder.lecturerName2.setText(lecturers);
+
+
+        String venue = course.getVenue().stream()
+                        .filter(ven -> !ven.trim().isEmpty())
+                                .map(ven -> ven + "\n")
+                                        .collect(Collectors.joining());
         holder.venueVal
-                .setText(mGroupBind.get(position).getVenue().toString());
+                .setText(venue);
         holder.sectionVal
-                .setText(mGroupBind.get(position).getSection_val());
-        getPos(holder);
+                .setText(course.getSection_val());
     }
 
     @Override
     public int getItemCount() {
-        return mGroupBind.size();
+        return courseList.size();
 
     }
-    public void getPos(ViewHolder viewHolder){
-        mPos =  viewHolder.getAdapterPosition();
-    }
+
 
 
 }
