@@ -7,12 +7,22 @@ import java.util.List;
 
 public class Course implements Serializable {
 
+    private String codeVal = "";
+    private String sectionVal = "";
+    private String nameVal = "";
+    private String creditVal = "";
+    private List<String> day_val = Collections.emptyList();
+    private List<String> time_val = Collections.emptyList();
+    private List<String> venue = Collections.emptyList();
+    private List<String> lectures = Collections.emptyList();
+    private String htmlTable = "";
+
 
     public Course(String code, String sect, String name, String chr, List<String> dayVal, List<String> timeVal, List<String> venue, List<String> lecturers,String Data) {
-        this.code_val = code;
-        this.section_val = sect;
-        this.name_val = name;
-        this.credit_val = chr;
+        this.codeVal = code;
+        this.sectionVal = sect;
+        this.nameVal = name;
+        this.creditVal = chr;
         this.day_val = dayVal;
         this.time_val = timeVal;
         this.venue = venue;
@@ -20,36 +30,36 @@ public class Course implements Serializable {
         this.htmlTable = Data;
     }
 
-    public String getCode_val() {
-        return code_val;
+    public String getCodeVal() {
+        return codeVal;
     }
 
-    public void setCode_val(String code_val) {
-        this.code_val = code_val;
+    public void setCodeVal(String codeVal) {
+        this.codeVal = codeVal;
     }
 
-    public String getSection_val() {
-        return section_val;
+    public String getSectionVal() {
+        return sectionVal;
     }
 
-    public void setSection_val(String section_val) {
-        this.section_val = section_val;
+    public void setSectionVal(String sectionVal) {
+        this.sectionVal = sectionVal;
     }
 
-    public String getName_val() {
-        return name_val;
+    public String getNameVal() {
+        return nameVal;
     }
 
-    public void setName_val(String name_val) {
-        this.name_val = name_val;
+    public void setNameVal(String nameVal) {
+        this.nameVal = nameVal;
     }
 
-    public String getCredit_val() {
-        return credit_val;
+    public String getCreditVal() {
+        return creditVal;
     }
 
-    public void setCredit_val(String credit_val) {
-        this.credit_val = credit_val;
+    public void setCreditVal(String creditVal) {
+        this.creditVal = creditVal;
     }
 
     public List<String> getDay_val() {
@@ -84,17 +94,11 @@ public class Course implements Serializable {
         this.lectures = lectures;
     }
 
-    private String code_val = "";
-    private String section_val = "";
-    private String name_val = "";
-    private String credit_val = "";
-    private List<String> day_val = Collections.emptyList();
-    private List<String> time_val = Collections.emptyList();
-    private List<String> venue = Collections.emptyList();
-    private List<String> lectures = Collections.emptyList();
-    private String htmlTable = "";
-
     public String getHtmlTable() {
         return htmlTable;
+    }
+
+    public void setHtmlTable(String htmlTable) {
+        this.htmlTable = htmlTable;
     }
 }

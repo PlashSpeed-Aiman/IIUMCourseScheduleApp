@@ -1,15 +1,8 @@
 package com.example.recyclerviewtest;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,6 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recyclerviewtest.Model.Course;
 
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private int kulliyyahSelectPosition;
     private int pageSelectPosition;
     private int semesterSelectPosition;
-    WebscrapperAsyncTask webscrapperAsyncTask;
     Button buttonNext, buttonPrev, buttonReset;
     LinearLayout linearLayout;
 
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         buttonPrev = findViewById(R.id.buttonPrev);
         buttonReset = findViewById(R.id.buttonReset);
         linearLayout = findViewById(R.id.buttonLayout);
-        webscrapperAsyncTask = new WebscrapperAsyncTask();
         addDrawerItems();
         setupDrawer();
 
@@ -138,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     pageSelectPosition--;
                     pageSelect.setSelection(pageSelectPosition);
 //                    syncTask();
-                performWebScraping();
+                    performWebScraping();
                 }
             }
         });
@@ -150,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     pageSelectPosition = 0;
                     pageSelect.setSelection(pageSelectPosition);
 //                    syncTask();
-                performWebScraping();
+                    performWebScraping();
                 }
 
             }
@@ -158,22 +155,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void syncTask() {
-        try {
-            if (webscrapperAsyncTask.getStatus() != AsyncTask.Status.RUNNING) {   // check if asyncTasks is running
-                webscrapperAsyncTask.cancel(true); // asyncTasks not running => cancel it
-                webscrapperAsyncTask = new WebscrapperAsyncTask(); // reset task
-                webscrapperAsyncTask.execute(); // execute new task (the same task)
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("MainActivity_TSK", "Error: " + e.toString());
-        }
-    }
 
     public static class startInfoActivity extends MainActivity {
-        public void startInfoAct (View v){
-            Intent intent = new Intent(v.getContext(),MainActivity2.class);
+        public void startInfoAct(View v) {
+            Intent intent = new Intent(v.getContext(), MainActivity2.class);
             startActivity(intent);
         }
 
@@ -182,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
     private void initRecyclerViewAdapter() {
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -192,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
     private void performWebScraping() {
         // Show the progress dialog
         mProgressDialog = new ProgressDialog(this);
@@ -217,40 +204,6 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
-    public class WebscrapperAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressDialog = new ProgressDialog(MainActivity.this);
-            mProgressDialog.setTitle("Connecting to IIUM Course Schedule");
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                courses.clear();
-                courses = WebScraper.URLManipFunc(kulliyyahSelectPosition, pageSelectPosition, semesterSelectPosition);
-                Log.d("TAG", "String.valueOf(GroupBind)");
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-
-            // Set title into TextView
-            initRecyclerViewAdapter();
-//            initRecyclerViewAdapter();
-            mProgressDialog.dismiss();
-        }
-    }
 
     private void addDrawerItems() {
         String[] osArray = {"Schedule", "About", "Donations"};
@@ -260,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0 && mDrawerList.getSelectedItemPosition()!= 0){
+                if (position == 0 && mDrawerList.getSelectedItemPosition() != 0) {
 
                 }
 

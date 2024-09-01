@@ -75,9 +75,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         Course course = courseList.get(position);
         holder.subjectTitle
-                .setText(course.getName_val());
+                .setText(course.getNameVal());
         holder.subjectCode
-                .setText(course.getCode_val());
+                .setText(course.getCodeVal());
         String lecturers = course.getLectures().stream()
                 .filter(lecturer -> !lecturer.trim().isEmpty()) // Remove empty strings
                 .map(lecturer -> lecturer + "\n") // Append new line after each lecturer
@@ -93,7 +93,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.venueVal
                 .setText(venue);
         holder.sectionVal
-                .setText(course.getSection_val());
+                .setText(course.getSectionVal());
     }
 
     @Override

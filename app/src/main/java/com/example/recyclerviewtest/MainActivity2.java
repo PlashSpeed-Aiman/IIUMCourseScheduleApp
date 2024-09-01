@@ -55,10 +55,10 @@ public class MainActivity2 extends AppCompatActivity {
             str.append(i).append("\n\n");
         }
 
-        subjectCode.setText(subjectInfo.get(pos).getCode_val());
-        sectionValue.setText("SEC "+ subjectInfo.get(pos).getSection_val());
-        subjectTitle.setText(subjectInfo.get(pos).getName_val());
-        creditHour.setText("Credit Hour: " + subjectInfo.get(pos).getCredit_val());
+        subjectCode.setText(subjectInfo.get(pos).getCodeVal());
+        sectionValue.setText("SEC "+ subjectInfo.get(pos).getSectionVal());
+        subjectTitle.setText(subjectInfo.get(pos).getNameVal());
+        creditHour.setText("Credit Hour: " + subjectInfo.get(pos).getCreditVal());
         data_table.setText(str);
 
 
